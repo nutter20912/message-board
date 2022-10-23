@@ -22,7 +22,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        BadRequestException::class,
     ];
 
     /**
@@ -43,8 +43,18 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e) {
+            return optional(
+                ErrorStatusCode::fromInstance($e),
+                fn ($errorStatusCode) => response()->json(
+                    [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage(),
+                        'result' => null,
+                    ],
+                    $errorStatusCode->value,
+                ),
+            );
         });
     }
 }
