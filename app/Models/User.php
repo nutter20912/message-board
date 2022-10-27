@@ -7,10 +7,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema()]
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    #[OA\Property(property: 'id', description: '編號', type: 'int', format: 'int64')]
+    #[OA\Property(property: 'name', description: '姓名', type: 'string', maxLength: 255)]
+    #[OA\Property(property: 'email', description: '信箱', type: 'string', maxLength: 100)]
+    #[OA\Property(property: 'email_verified_at', description: '信箱驗證時間', type: 'string', format: 'date-time', nullable: true)]
+    #[OA\Property(property: 'password', description: '密碼', type: 'string', format: 'password', maxLength: 255)]
+    #[OA\Property(property: 'remember_token', description: '記住令牌', type: 'string', maxLength: 100)]
+    #[OA\Property(property: 'created_at', description: '建立時間', type: 'string', format: 'date-time')]
+    #[OA\Property(property: 'updated_at', description: '更新時間', type: 'string', format: 'date-time')]
+
+    /**
+     * 資料表名稱
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
