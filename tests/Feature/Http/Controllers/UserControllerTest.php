@@ -3,14 +3,11 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * 測試新增使用者成功
      *
@@ -72,24 +69,46 @@ class UserControllerTest extends TestCase
      */
     public function test_show_user_success()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
-        $response = $this->getJson("/api/users/{$user->id}");
+        $response = $this->actingAs($user)->getJson("/api/users/{$user->id}");
 
         $response
             ->assertStatus(200)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json
-                    ->where('code', 200)
-                    ->where('message', 'ok')
-                    ->where('result.id', $user->id)
-                    ->where('result.name', $user->name)
-                    ->where('result.email', $user->email)
-                    ->where('result.created_at', $user->created_at->toJSON())
-                    ->where('result.updated_at', $user->updated_at->toJSON())
-            );
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+                'result' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'created_at' => $user->created_at->toJSON(),
+                    'updated_at' => $user->updated_at->toJSON(),
+                ]
+            ]);
 
         $this->assertModelExists($user);
+    }
+
+    /**
+     * 測試查詢使用者不存在
+     *
+     * @return void
+     */
+    public function test_show_user_error_with_wrong_id()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->getJson("/api/users/999");
+
+        $response
+            ->assertStatus(404)
+            ->assertExactJson([
+                'code' => 0,
+                'message' => 'resource not found',
+                'result' => null,
+            ]);
     }
 }

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/auth')->group(function () {
-    Route::get('/csrf-cookie', [AuthController::class, 'getCsrfCookie']);
-});
+Route::get('/auth/csrf-cookie', [AuthController::class, 'getCsrfCookie']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::put('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/users', [UserController::class, 'store']);
 
-Route::apiResource('users', UserController::class)->except('index');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class)->except(['index', 'store']);
+});

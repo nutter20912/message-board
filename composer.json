@@ -49,7 +49,7 @@
             "@php artisan key:generate --ansi"
         ],
         "test-coverage": [
-            "@php artisan test --coverage-html ./tests/dist"
+            "@php artisan test --coverage-html ./storage/framework/testing/dist"
         ]
     },
     "extra": {
