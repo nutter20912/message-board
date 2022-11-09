@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema()]
+class PostCollection extends ResourceCollection
+{
+    #[OA\Property(
+        property: 'data',
+        description: '資料',
+        type: 'array',
+        items: new OA\Items(
+            allOf: [
+                new OA\Schema(type: PostResource::class),
+                new OA\Schema(properties: [
+                    new OA\Property(
+                        property: 'user',
+                        properties: [
+                            new OA\Property(property: 'id', description: '使用者編號', type: 'int', format: 'int64'),
+                            new OA\Property(property: 'name', description: '姓名', type: 'string'),
+                        ],
+                    ),
+                ]),
+            ],
+        )
+    )]
+    #[OA\Property(
+        property: 'paginator',
+        description: '分頁訊息',
+        type: 'object',
+        properties: [
+            new OA\Property(property: 'current_page', description: '當前頁', type: 'int'),
+            new OA\Property(property: 'last_page', description: '最後一頁', type: 'int'),
+            new OA\Property(property: 'per_page', description: '每頁', type: 'int'),
+            new OA\Property(property: 'total', description: '合計', type: 'int'),
+        ],
+    )]
+
+    /**
+     * @var string
+     */
+    public $collects = PostResource::class;
+
+    protected $preserveAllQueryParameters = false;
+
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        return [
+            'data' => $this->collection,
+            'paginator' => [
+                'current_page' => $this->resource->currentPage(),
+                'last_page' => $this->resource->lastPage(),
+                'per_page' => $this->resource->perPage(),
+                'total' => $this->resource->total(),
+            ],
+        ];
+    }
+}

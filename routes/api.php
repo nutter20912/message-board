@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,5 +23,9 @@ Route::put('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:
 Route::post('/users', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('users', UserController::class)->except(['index', 'store']);
+    Route::apiResource('users', UserController::class)
+        ->except(['index', 'store'])
+        ->whereNumber('user');;
+    Route::apiResource('posts', PostController::class)
+        ->whereNumber('post');
 });
