@@ -45,6 +45,12 @@ class PostController extends Controller
     #[OA\Response(response: 400, description: 'Bad request')]
     public function index(Request $request)
     {
+
+        //sleep(3);
+        //return response()->json([
+        //    'message' => 'unauth',
+        //], 401);
+
         $page = $request->input('page', 1);
 
         /** @var Illuminate\Pagination\Paginator */
@@ -208,13 +214,41 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 刪除文章
      *
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
+    #[OA\Delete(
+        path: '/posts/{id}',
+        description: '刪除文章',
+        tags: ['posts'],
+        operationId: 'posts.destroy',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: '文章編號',
+                required: 'true',
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'success',
+        content: new OA\JsonContent(ref: '#/components/schemas/apiResponse')
+    )]
+    #[OA\Response(response: 400, description: 'Bad request')]
     public function destroy(Post $post)
     {
-        //
+        $this->authorize('delete', $post);
+
+        $post->delete();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'ok',
+        ], 200);
     }
 }

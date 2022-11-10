@@ -225,4 +225,51 @@ class PostControllerTest extends TestCase
                 'message' => 'This action is unauthorized.',
             ]);
     }
+
+    /**
+     * 測試刪除文章，成功
+     *
+     * @return void
+     */
+    public function test_destroy_post_success()
+    {
+        $post = Post::factory()
+            ->for($this->authenticatedUser)
+            ->create();
+
+        $response = $this->deleteJson("/api/posts/{$post->id}");
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+            ]);
+
+        $this->assertModelMissing($post);
+    }
+
+    /**
+     * 測試刪除文章，授權失敗
+     *
+     * @return void
+     */
+    public function test_destroy_post_unauthenticated()
+    {
+        $otherUser = User::factory()->create();
+
+        $post = Post::factory()
+            ->for($otherUser)
+            ->create();
+
+        $response = $this->deleteJson("/api/posts/{$post->id}");
+
+        $response
+            ->assertStatus(403)
+            ->assertJson([
+                'message' => 'This action is unauthorized.',
+            ]);
+
+        $this->assertModelExists($post);
+    }
 }
