@@ -55,6 +55,7 @@ class PostController extends Controller
 
         /** @var Illuminate\Pagination\Paginator */
         $posts = Post::with('user')
+            ->orderby('id', 'desc')
             ->paginate(perPage: 4, page: $page);
 
 

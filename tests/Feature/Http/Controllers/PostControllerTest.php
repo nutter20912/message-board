@@ -57,11 +57,11 @@ class PostControllerTest extends TestCase
                         'total' => 3,
                     ]))
                     ->has('data', 3, fn ($json) => $json->whereAll([
-                        'id' => $posts[0]->id,
-                        'title' => $posts[0]->title,
-                        'content' => $posts[0]->content,
-                        'updated_at' => $posts[0]->updated_at->toJSON(),
-                        'created_at' => $posts[0]->created_at->toJSON(),
+                        'id' => $posts->last()->id,
+                        'title' => $posts->last()->title,
+                        'content' => $posts->last()->content,
+                        'updated_at' => $posts->last()->updated_at->toJSON(),
+                        'created_at' => $posts->last()->created_at->toJSON(),
                         'user' => [
                             'id' => $this->authenticatedUser->id,
                             'name' => $this->authenticatedUser->name,
