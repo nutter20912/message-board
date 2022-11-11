@@ -45,12 +45,6 @@ class PostController extends Controller
     #[OA\Response(response: 400, description: 'Bad request')]
     public function index(Request $request)
     {
-
-        //sleep(3);
-        //return response()->json([
-        //    'message' => 'unauth',
-        //], 401);
-
         $page = $request->input('page', 1);
 
         /** @var Illuminate\Pagination\Paginator */
