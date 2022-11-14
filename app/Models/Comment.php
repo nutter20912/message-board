@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema()]
-class Post extends Model
+class Comment extends Model
 {
     use HasFactory;
 
     #[OA\Property(property: 'id', description: '編號', type: 'int', format: 'int64')]
-    #[OA\Property(property: 'title', description: '標題', type: 'string', maxLength: 255)]
-    #[OA\Property(property: 'content', description: '內容', type: 'string')]
+    #[OA\Property(property: 'content', description: '內容', type: 'string', maxLength: 255)]
     #[OA\Property(property: 'created_at', description: '建立時間', type: 'string', format: 'date-time')]
     #[OA\Property(property: 'updated_at', description: '更新時間', type: 'string', format: 'date-time')]
+    #[OA\Property(property: 'post_id', description: '文章編號', type: 'int', format: 'int64')]
     #[OA\Property(property: 'user_id', description: '使用者編號', type: 'int', format: 'int64')]
 
     /**
@@ -23,7 +23,7 @@ class Post extends Model
      *
      * @var string
      */
-    protected $table = 'posts';
+    protected $table = 'comments';
 
     /**
      * The attributes that are mass assignable.
@@ -31,28 +31,28 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
         'content',
         'user_id',
+        'post_id',
     ];
 
     /**
-     * 作者
+     * 評論文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
+    /**
+     * 使用者
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * 文章評論
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
     }
 }

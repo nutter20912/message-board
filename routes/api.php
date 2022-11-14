@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
@@ -28,4 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->whereNumber('user');;
     Route::apiResource('posts', PostController::class)
         ->whereNumber('post');
+    Route::apiResource('posts.comments', CommentController::class)
+        ->shallow()
+        ->whereNumber('comment');
 });
