@@ -217,6 +217,7 @@ class CommentController extends Controller
         return response()->json([
             'code' => 200,
             'message' => 'ok',
+            'result' => new CommentResource($comment),
         ], 200);
     }
 

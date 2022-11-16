@@ -13,6 +13,13 @@ class PostResource extends JsonResource
     #[OA\Property(property: 'content', description: '內容', type: 'string')]
     #[OA\Property(property: 'created_at', description: '建立時間', type: 'string', format: 'date-time')]
     #[OA\Property(property: 'updated_at', description: '更新時間', type: 'string', format: 'date-time')]
+    #[OA\Property(
+        property: 'user',
+        properties: [
+            new OA\Property(property: 'id', description: '使用者編號', type: 'int', format: 'int64'),
+            new OA\Property(property: 'name', description: '姓名', type: 'string'),
+        ],
+    )]
 
     /**
      * Transform the resource into an array.
@@ -28,7 +35,7 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user' => $this->when($request->routeIs('posts.index'), $this->user->only('id', 'name')),
+            'user' => $this->user->only('id', 'name'),
         ];
     }
 }

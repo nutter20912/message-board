@@ -183,11 +183,17 @@ class CommentControllerTest extends TestCase
         $response = $this->putJson("/api/comments/{$comment->id}", $params);
 
         $response
-            ->assertStatus(200)
-            ->assertExactJson([
-                'code' => 200,
-                'message' => 'ok',
-            ]);
+        ->assertStatus(200)
+        ->assertJson(
+            fn (AssertableJson $json) =>
+            $json
+                ->where('code', 200)
+                ->where('message', 'ok')
+                ->where('result.id', $comment->id)
+                ->where('result.content', $params['content'])
+                ->where('result.created_at', $comment->created_at->toJSON())
+                ->has('result.updated_at')
+        );
 
         $newComment = Comment::find($comment->id);
 

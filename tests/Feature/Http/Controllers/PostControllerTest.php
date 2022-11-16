@@ -143,6 +143,10 @@ class PostControllerTest extends TestCase
                     'content' => $post->content,
                     'created_at' => $post->created_at->toJSON(),
                     'updated_at' => $post->updated_at->toJSON(),
+                    'user' => [
+                        'id' => $post->user->id,
+                        'name' => $post->user->name,
+                    ],
                 ]
             ]);
 

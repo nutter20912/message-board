@@ -13,18 +13,7 @@ class PostCollection extends ResourceCollection
         description: '資料',
         type: 'array',
         items: new OA\Items(
-            allOf: [
-                new OA\Schema(type: PostResource::class),
-                new OA\Schema(properties: [
-                    new OA\Property(
-                        property: 'user',
-                        properties: [
-                            new OA\Property(property: 'id', description: '使用者編號', type: 'int', format: 'int64'),
-                            new OA\Property(property: 'name', description: '姓名', type: 'string'),
-                        ],
-                    ),
-                ]),
-            ],
+            type: PostResource::class,
         )
     )]
     #[OA\Property(
