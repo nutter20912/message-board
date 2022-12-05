@@ -195,15 +195,9 @@ class CommentControllerTest extends TestCase
                 ->has('result.updated_at')
         );
 
-        $newComment = Comment::find($comment->id);
+        $newComment = Comment::find($comment->id)->toArray();
 
-        $this->assertEquals(
-            $newComment->toArray(),
-            [
-                ...$comment->toArray(),
-                'content' => $params['content'],
-            ]
-        );
+        $this->assertEquals($newComment['content'], $params['content']);
     }
 
     /**
