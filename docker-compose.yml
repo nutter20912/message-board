@@ -1,6 +1,15 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
+    php-fpm:
+        build:
+            context: ./
+            dockerfile: ./docker/php-fpm/Dockerfile
+            target: 'test'
+        ports:
+            - "9000:9000"
+        restart: always
+
     laravel.test:
         build:
             context: ./docker/8.1
