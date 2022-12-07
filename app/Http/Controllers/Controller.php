@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
         version: '1.0.0',
         title: '簡易留言板',
         description: '簡易留言板 api doc',
-        contact: new OA\contact(
+        contact: new OA\Contact(
             name: 'paul chou',
             url: 'https://github.com/nutter20912',
         )
