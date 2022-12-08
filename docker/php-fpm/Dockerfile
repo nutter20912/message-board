@@ -41,3 +41,12 @@ RUN chmod -R 777 storage
 RUN composer run post-autoload-dump
 
 RUN php artisan test
+
+###########################################################################
+# prod
+###########################################################################
+FROM base AS prod
+
+COPY . .
+RUN chmod -R 777 storage
+RUN composer run post-autoload-dump
