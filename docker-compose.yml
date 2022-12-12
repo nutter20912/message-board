@@ -9,8 +9,6 @@ services:
         ports:
             - 9000:9000
         restart: always
-        volumes:
-            - .:/var/www/
         networks:
             - sail
         depends_on:

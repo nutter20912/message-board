@@ -34,6 +34,9 @@ COPY . .
 RUN chmod -R 777 storage
 RUN composer run post-autoload-dump
 
+RUN php artisan key:generate
+RUN php artisan l5-swagger:generate
+
 ###########################################################################
 # test
 ###########################################################################
