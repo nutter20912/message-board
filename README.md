@@ -65,6 +65,9 @@
 
     // horizon static resource
     php artisan horizon:install
+
+    //運行 horizon
+    php artisan horizon
     ```
 
 ### Test
