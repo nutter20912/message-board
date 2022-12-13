@@ -57,12 +57,14 @@
     //mysql cli
     mysql> CREATE DATABASE {database_name};
     ```
-- database migrate
+- attach php-fpm container
     ```=bash
-    //attach shell
     docker exec -it <php-fpm container id> sh
     //資料庫 migration
     php artisan migrate
+
+    // horizon static resource
+    php artisan horizon:install
     ```
 
 ### Test
