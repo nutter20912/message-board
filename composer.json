@@ -11,6 +11,7 @@
         "laravel/framework": "^9.19",
         "laravel/horizon": "^5.10",
         "laravel/sanctum": "^3.0",
+        "laravel/telescope": "^4.10",
         "laravel/tinker": "^2.7",
         "pusher/pusher-php-server": "^7.2",
         "zircote/swagger-php": "^4.4"

@@ -19,6 +19,7 @@ COPY composer.* .
 RUN composer install --no-scripts && composer clear-cache
 
 COPY ./docker/php-fpm/conf.d /usr/local/etc/php/conf.d
+RUN touch database.sqlite
 
 ###########################################################################
 # local
@@ -32,10 +33,11 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
 
 COPY . .
 RUN chmod -R 777 storage
-RUN composer run post-autoload-dump
 
-RUN php artisan key:generate
-RUN php artisan l5-swagger:generate
+COPY ./docker/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+CMD ["entrypoint.sh"]
 
 ###########################################################################
 # test

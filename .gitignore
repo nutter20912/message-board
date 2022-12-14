@@ -19,3 +19,4 @@ yarn-error.log
 /resources/views/vendor/l5-swagger
 /storage/api-docs
 */dist
+*.sqlite
