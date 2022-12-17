@@ -28,6 +28,7 @@ class UserNotificationFactory extends Factory
         return [
             'content' => $this->faker->sentence(),
             'user_id' => User::factory(),
+            'created_at' => $this->faker->date('Y-m-d H:m:s'),
         ];
     }
 }
