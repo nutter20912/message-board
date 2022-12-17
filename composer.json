@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/telescope": "^4.10",
         "laravel/tinker": "^2.7",
+        "nesbot/carbon": "^2.64",
         "pusher/pusher-php-server": "^7.2",
         "zircote/swagger-php": "^4.4"
     },

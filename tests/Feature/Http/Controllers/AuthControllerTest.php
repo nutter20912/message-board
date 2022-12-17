@@ -4,11 +4,24 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
+
     /**
      * 測試 csrf cookie 成功
      *
@@ -51,6 +64,8 @@ class AuthControllerTest extends TestCase
                     'updated_at' => $user->updated_at->toJSON(),
                 ]
             ]);
+
+        Event::assertDispatched(\Illuminate\Auth\Events\Login::class, 1);
     }
 
     /**
@@ -68,6 +83,8 @@ class AuthControllerTest extends TestCase
                 'message' => 'The email field is required. (and 1 more error)',
                 'result' => null,
             ]);
+
+        Event::assertNotDispatched(\Illuminate\Auth\Events\Login::class);
     }
 
     /**
@@ -90,6 +107,8 @@ class AuthControllerTest extends TestCase
                 'message' => 'Login failed',
                 'result' => null,
             ]);
+
+        Event::assertNotDispatched(\Illuminate\Auth\Events\Login::class);
     }
 
     /**

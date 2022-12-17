@@ -139,6 +139,12 @@ return [
             'ignore' => [],
         ],
 
+        \App\Libs\Telescope\Watchers\FrameworkEventWatcher::class => [
+            'enabled' => env('TELESCOPE_EVENT_WATCHER', true),
+            'events' => ['Illuminate\Auth\Events\*'],
+            'targets' => [Illuminate\Auth\Events\Login::class]
+        ],
+
         Watchers\ExceptionWatcher::class => env('TELESCOPE_EXCEPTION_WATCHER', true),
 
         Watchers\GateWatcher::class => [
