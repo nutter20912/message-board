@@ -12,7 +12,16 @@ class UserNotificationCollection extends ResourceCollection
         property: 'data',
         description: '資料',
         type: 'array',
-        items: new OA\Items(type: UserNotificationResource::class)
+        items: new OA\Items(
+            properties: [
+                // TODO 改成可排除屬性
+                new OA\Property(property: 'id', ref: '#/components/schemas/UserNotificationResource/properties/id'),
+                new OA\Property(property: 'content', ref: '#/components/schemas/UserNotificationResource/properties/content'),
+                new OA\Property(property: 'created_at', ref: '#/components/schemas/UserNotificationResource/properties/created_at'),
+                new OA\Property(property: 'notifiable_type', ref: '#/components/schemas/UserNotificationResource/properties/notifiable_type'),
+                new OA\Property(property: 'notifiable_id', ref: '#/components/schemas/UserNotificationResource/properties/notifiable_id'),
+            ],
+        )
     )]
     #[OA\Property(
         property: 'paginator',

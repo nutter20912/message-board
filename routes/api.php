@@ -28,7 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ->except(['index', 'store'])
         ->whereNumber('user');;
     Route::apiResource('notifications', UserNotificationController::class)
-        ->only(['index']);
+        ->parameters(['notifications' => 'userNotification'])
+        ->only(['index','show']);
     Route::apiResource('posts', PostController::class)
         ->whereNumber('post');
     Route::apiResource('posts.comments', CommentController::class)

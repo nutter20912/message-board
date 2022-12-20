@@ -57,7 +57,7 @@ class UserNotificationControllerTest extends TestCase
                     ->has('paginator', fn ($json) => $json->whereAll([
                         'current_page' => 1,
                         'last_page' => 1,
-                        'per_page' => 4,
+                        'per_page' => 15,
                         'total' => 3,
                     ]))
                     ->has('data', 3, fn ($json) => $json->whereAll([
@@ -66,9 +66,63 @@ class UserNotificationControllerTest extends TestCase
                         'created_at' => $expected->created_at,
                         'notifiable_type' => UserNotifiable::tryFrom($expected->notifiable_type)?->name,
                         'notifiable_id' => $expected->notifiable_id,
-                        'notifiable' => $expected->notifiable->toArray(),
                     ]))
                     ->etc()
             );
+    }
+
+    /**
+     * 測試取得通知，成功
+     *
+     * @return void
+     */
+    public function test_show_user_notitication_success()
+    {
+        $expected = UserNotification::factory()
+            ->for(UserLoginRecord::factory(), 'notifiable')
+            ->for($this->authenticatedUser)
+            ->create();
+
+        $response = $this->getJson("/api/notifications/{$expected->id}");
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+                'result' => [
+                    'id' => $expected->id,
+                    'content' => $expected->content,
+                    'created_at' => $expected->created_at,
+                    'notifiable_id' => $expected->notifiable_id,
+                    'notifiable_type' => UserNotifiable::tryFrom($expected->notifiable_type)?->name,
+                    'notifiable' => $expected->notifiable->toArray(),
+                ]
+            ]);
+
+        $this->assertModelExists($expected);
+    }
+
+    /**
+     * 測試取得通知，授權失敗
+     *
+     * @return void
+     */
+    public function test_show_user_notitication_unauthenticated()
+    {
+        $otherUser = User::factory()->create();
+
+        $userNotification = UserNotification::factory()
+            ->for(UserLoginRecord::factory(), 'notifiable')
+            ->for($otherUser)
+            ->create();
+
+        $response = $this->getJson("/api/notifications/{$userNotification->id}");
+
+        $response
+            ->assertStatus(403)
+            ->assertJson([
+                'message' => 'This action is unauthorized.',
+            ]);
     }
 }
