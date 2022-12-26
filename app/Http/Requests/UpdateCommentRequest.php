@@ -38,7 +38,7 @@ class UpdateCommentRequest extends FormRequest
     public function withValidator($validator)
     {
         if ($validator->fails()) {
-            throw new BadRequestException($validator->errors()->first(), 126);
+            throw new BadRequestException($validator->errors()->first(), 10302);
         }
     }
 }

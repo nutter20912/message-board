@@ -44,7 +44,7 @@ class PostRequest extends FormRequest
     public function withValidator($validator)
     {
         if ($validator->fails()) {
-            throw new BadRequestException($validator->errors()->first(), 124);
+            throw new BadRequestException($validator->errors()->first(), 10201);
         }
     }
 }

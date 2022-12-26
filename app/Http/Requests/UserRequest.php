@@ -48,7 +48,7 @@ class UserRequest extends FormRequest
     public function withValidator($validator)
     {
         if ($validator->fails()) {
-            throw new BadRequestException($validator->errors()->first(), 123);
+            throw new BadRequestException($validator->errors()->first(), 10101);
         }
     }
 }

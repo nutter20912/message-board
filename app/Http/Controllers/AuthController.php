@@ -71,7 +71,7 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($credentials)) {
-            throw new BadRequestException('Login failed', 100002);
+            throw new BadRequestException('Login failed', 10001);
         }
 
         $request->session()->regenerate();

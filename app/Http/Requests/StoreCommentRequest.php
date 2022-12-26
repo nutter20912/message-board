@@ -38,7 +38,7 @@ class StoreCommentRequest extends FormRequest
     public function withValidator($validator)
     {
         if ($validator->fails()) {
-            throw new BadRequestException($validator->errors()->first(), 125);
+            throw new BadRequestException($validator->errors()->first(), 10301);
         }
     }
 }
