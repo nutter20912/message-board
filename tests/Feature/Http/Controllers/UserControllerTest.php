@@ -56,7 +56,7 @@ class UserControllerTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertExactJson([
-                'code' => 123,
+                'code' => 10101,
                 'message' => 'The email must be a valid email address.',
                 'result' => null,
             ]);

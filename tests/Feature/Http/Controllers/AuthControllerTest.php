@@ -103,7 +103,7 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(400)
             ->assertExactJson([
-                'code' => 100002,
+                'code' => 10001,
                 'message' => 'Login failed',
                 'result' => null,
             ]);

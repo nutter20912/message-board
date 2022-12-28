@@ -113,7 +113,7 @@ class PostControllerTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertExactJson([
-                'code' => 124,
+                'code' => 10201,
                 'message' => 'The title field is required.',
                 'result' => null,
             ]);

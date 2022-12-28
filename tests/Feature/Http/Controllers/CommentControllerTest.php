@@ -116,7 +116,7 @@ class CommentControllerTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertExactJson([
-                'code' => 125,
+                'code' => 10301,
                 'message' => 'The content field is required.',
                 'result' => null,
             ]);
@@ -216,7 +216,7 @@ class CommentControllerTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertExactJson([
-                'code' => 126,
+                'code' => 10302,
                 'message' => 'The content field is required.',
                 'result' => null,
             ]);
