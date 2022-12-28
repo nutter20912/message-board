@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRelationshipController;
 use App\Http\Controllers\UserNotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,10 @@ Route::middleware('auth:sanctum')->group(function () {
         ->whereNumber('user');;
     Route::apiResource('notifications', UserNotificationController::class)
         ->parameters(['notifications' => 'userNotification'])
-        ->only(['index','show']);
+        ->only(['index', 'show']);
+    Route::apiResource('relationship', UserRelationshipController::class)
+        ->parameters(['relationship' => 'child:child_id'])
+        ->whereNumber('child');
     Route::apiResource('posts', PostController::class)
         ->whereNumber('post');
     Route::apiResource('posts.comments', CommentController::class)

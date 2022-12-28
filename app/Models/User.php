@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Request;
 use Laravel\Sanctum\HasApiTokens;
 use OpenApi\Attributes as OA;
 
@@ -61,6 +62,24 @@ class User extends Authenticatable
     ];
 
     /**
+     * 路由模型綁定
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return match ($field) {
+            'child_id' => Request::user()
+                ->children()
+                ->where($field, $value)
+                ->firstOrFail(),
+            default => parent::resolveRouteBinding($value),
+        };
+    }
+
+    /**
      * 使用者文章
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -88,5 +107,39 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(UserNotification::class);
+    }
+
+    /**
+     * 擁有者
+     */
+    public function owners()
+    {
+        return $this->belongsToMany(
+            related: User::class,
+            table: 'user_relationship',
+            foreignPivotKey: 'child_id',
+            relatedPivotKey: 'owner_id',
+        )
+            ->using(UserRelationship::class)
+            ->as('relationship')
+            ->withPivot(['id', 'type'])
+            ->withTimestamps();
+    }
+
+    /**
+     * 下層
+     */
+    public function children()
+    {
+        return $this->belongsToMany(
+            related: User::class,
+            table: 'user_relationship',
+            foreignPivotKey: 'owner_id',
+            relatedPivotKey: 'child_id',
+        )
+            ->using(UserRelationship::class)
+            ->as('relationship')
+            ->withPivot(['id', 'type'])
+            ->withTimestamps();
     }
 }
