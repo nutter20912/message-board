@@ -21,11 +21,12 @@ class UserRelationshipControllerTest extends TestCase
         User::factory()->create();
 
         $mockUser = Mockery::mock(User::class);
+        $mockUser->shouldReceive('getAttribute')->with('id')->andReturn(111);
         $mockUser->shouldReceive('children->where->doesntExistOr');
         $mockUser->shouldReceive('children->attach')->andThrow(new PDOException('test'));
 
         $mockRequest = Mockery::mock(Request::class);
-        $mockRequest->shouldReceive('input')->andReturn(1);
+        $mockRequest->shouldReceive('input')->with('child_id')->andReturn(1);
         $mockRequest->shouldReceive('user')->andReturn($mockUser);
 
         (new UserRelationshipController())->store($mockRequest);

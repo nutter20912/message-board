@@ -16,3 +16,4 @@
 | relationship.update  | **10405** | Update user relationship error. |
 | relationship.destroy | **10406** | Delete user relationship error. |
 | relationship.index   | **10407** | User relationship type is wrong. |
+| relationship.store   | **10408** | Can not request self. |

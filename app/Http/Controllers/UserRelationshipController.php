@@ -52,6 +52,10 @@ class UserRelationshipController extends Controller
         $childId = $request->input('child_id');
         $user = $request->user();
 
+        if ($childId === $user->id) {
+            throw new AE\BadRequestException(code: 10408, message: 'Can not request self.');
+        }
+
         $user->children()
             ->where('child_id', $childId)
             ->doesntExistOr(fn () => throw new AE\BadRequestException(code: 10401, message: 'Already requested.'));

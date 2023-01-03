@@ -152,6 +152,26 @@ class UserRelationshipControllerTest extends TestCase
     }
 
     /**
+     * 測試新增關係失敗，不能加自己
+     *
+     * @return void
+     */
+    public function test_store_error_with_self()
+    {
+        $params = ['child_id' => $this->authenticatedUser->id];
+
+        $response = $this->postJson('/api/relationship', $params);
+
+        $response
+            ->assertStatus(400)
+            ->assertExactJson([
+                'code' => 10408,
+                'message' => 'Can not request self.',
+                'result' => null,
+            ]);
+    }
+
+    /**
      * 測試新增關係失敗，關係已存在
      *
      * @return void
