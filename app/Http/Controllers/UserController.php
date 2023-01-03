@@ -78,6 +78,12 @@ class UserController extends Controller
                 required: 'true',
                 schema: new OA\Schema(type: 'integer')
             ),
+            new OA\Parameter(
+                name: 'relationship',
+                in: 'query',
+                description: '是否查詢關係',
+                schema: new OA\Schema(type: 'boolean')
+            ),
         ],
     )]
     #[OA\Response(
@@ -99,8 +105,14 @@ class UserController extends Controller
      * @param App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
+        $relationship = $request->boolean('relationship');
+
+        if ($relationship) {
+            $user->load(['owners' => fn ($query) => $query->wherePivot('owner_id', $request->user()->id)]);
+        }
+
         return response()->json([
             'code' => 200,
             'message' => 'ok',

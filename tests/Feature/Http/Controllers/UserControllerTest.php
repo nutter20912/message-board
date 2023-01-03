@@ -92,6 +92,76 @@ class UserControllerTest extends TestCase
     }
 
     /**
+     * 測試查詢使用者成功，查詢關係
+     *
+     * @return void
+     */
+    public function test_show_success_with_relationship()
+    {
+        /** @var \App\Models\User $owner */
+        $owner = User::factory()->create();
+
+        $user = User::factory()
+            ->hasAttached($owner, ['type' => 0], 'owners')
+            ->create();
+
+        $expectedRelationship = $user
+            ->owners()
+            ->get()
+            ->first()
+            ->toArray()['relationship'];
+
+        $response = $this->actingAs($owner)->json('GET', "/api/users/{$user->id}", ['relationship' => true]);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+                'result' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'created_at' => $user->created_at->toJSON(),
+                    'updated_at' => $user->updated_at->toJSON(),
+                    'relationship' => $expectedRelationship,
+                ]
+            ]);
+
+        $this->assertModelExists($user);
+    }
+
+    /**
+     * 測試查詢使用者成功，查詢關係且關係不存在
+     *
+     * @return void
+     */
+    public function test_show_success_with_unexist_relationship()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->json('GET', "/api/users/{$user->id}", ['relationship' => true]);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+                'result' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'created_at' => $user->created_at->toJSON(),
+                    'updated_at' => $user->updated_at->toJSON(),
+                    'relationship' => null,
+                ]
+            ]);
+
+        $this->assertModelExists($user);
+    }
+
+    /**
      * 測試查詢使用者不存在
      *
      * @return void
