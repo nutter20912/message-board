@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRrelationshipType;
+use App\Events\RelationshipConfirmed;
 use App\Exceptions as AE;
 use App\Http\Resources\UserRelationshipCollection;
 use App\Http\Resources\UserRelationshipResource;
@@ -50,10 +51,15 @@ class UserRelationshipController extends Controller
     public function store(Request $request)
     {
         $childId = $request->input('child_id');
+        $type = $request->enum('type', UserRrelationshipType::class);
         $user = $request->user();
 
         if ($childId === $user->id) {
             throw new AE\BadRequestException(code: 10408, message: 'Can not request self.');
+        }
+
+        if ($request->has('type') && is_null($type)) {
+            throw new AE\BadRequestException(code: 10411, message: 'User relationship type is wrong.');
         }
 
         $user->children()
@@ -62,7 +68,7 @@ class UserRelationshipController extends Controller
 
         try {
             $child = User::findOrFail($childId);
-            $user->children()->attach($child->id, ['type' => 0]);
+            $user->children()->attach($child->id, ['type' => $type?->value ?? 0]);
         } catch (ModelNotFoundException $e) {
             throw new AE\ModelNotFoundException(code: 10402, message: 'Child not found.');
         } catch (PDOException $e) {
@@ -131,6 +137,38 @@ class UserRelationshipController extends Controller
         } catch (PDOException $e) {
             throw new AE\QueryException(code: 10406, message: 'Delete user relationship error.', previous: $e);
         }
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'ok',
+        ], 200);
+    }
+
+    /**
+     * 確認關係
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function confirm(Request $request)
+    {
+        $requestId = $request->input('request_id');
+        $confirm = $request->boolean('confirm');
+        $user = $request->user();
+
+        try {
+            $requestUser = $user->owners()
+                ->where('owner_id', $requestId)
+                ->firstOrFail();
+            $requestUser->relationship->type = $confirm;
+            $requestUser->relationship->save();
+        } catch (ModelNotFoundException $e) {
+            throw new AE\ModelNotFoundException(code: 10409, message: 'Request not found.');
+        } catch (PDOException $e) {
+            throw new AE\QueryException(code: 10410, message: 'Confirm user relationship error.', previous: $e);
+        }
+
+        RelationshipConfirmed::dispatch($user, $requestId, $confirm);
 
         return response()->json([
             'code' => 200,

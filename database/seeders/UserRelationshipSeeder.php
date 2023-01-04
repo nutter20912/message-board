@@ -16,6 +16,7 @@ class UserRelationshipSeeder extends Seeder
     public function run()
     {
         User::factory()
+            ->hasAttached(User::factory()->count(1), ['type' => 0], 'owners')
             ->hasAttached(User::factory()->count(1), ['type' => 0], 'children')
             ->hasAttached(User::factory()->count(1), ['type' => 1], 'children')
             ->create();

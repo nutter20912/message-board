@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('notifications', UserNotificationController::class)
         ->parameters(['notifications' => 'userNotification'])
         ->only(['index', 'show']);
+    Route::post('/relationship/confirm', [UserRelationshipController::class, 'confirm']);
     Route::apiResource('relationship', UserRelationshipController::class)
         ->parameters(['relationship' => 'child:child_id'])
         ->whereNumber('child');

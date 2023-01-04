@@ -172,6 +172,26 @@ class UserRelationshipControllerTest extends TestCase
     }
 
     /**
+     * 測試新增關係失敗，類型錯誤
+     *
+     * @return void
+     */
+    public function test_store_error_with_wrong_type()
+    {
+        $params = ['child_id' => 10, 'type' => 99];
+
+        $response = $this->postJson('/api/relationship', $params);
+
+        $response
+            ->assertStatus(400)
+            ->assertExactJson([
+                'code' => 10411,
+                'message' => 'User relationship type is wrong.',
+                'result' => null,
+            ]);
+    }
+
+    /**
      * 測試新增關係失敗，關係已存在
      *
      * @return void
@@ -317,5 +337,124 @@ class UserRelationshipControllerTest extends TestCase
             ]);
 
         $this->assertModelMissing($child->relationship);
+    }
+
+    /**
+     * 測試確認關係成功，接受關係並新增 user_relationship
+     *
+     * @return void
+     */
+    public function test_confirm_success_with_accept_and_store()
+    {
+        $owner = $this->authenticatedUser
+            ->owners()
+            ->first();
+
+        $params = ['request_id' => $owner->id, 'confirm' => true];
+
+        $response = $this->postJson("/api/relationship/confirm", $params);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+            ]);
+    }
+
+    /**
+     * 測試確認關係成功，接受關係並更新 user_relationship
+     *
+     * @return void
+     */
+    public function test_confirm_success_with_accept_and_update()
+    {
+        $owner = $this->authenticatedUser
+            ->owners()
+            ->first();
+
+        $this->authenticatedUser
+            ->children()
+            ->attach($owner->id, ['type' => 0]);
+
+        $params = ['request_id' => $owner->id, 'confirm' => true];
+
+        $response = $this->postJson("/api/relationship/confirm", $params);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+            ]);
+    }
+
+    /**
+     * 測試確認關係成功，拒絕關係
+     *
+     * @return void
+     */
+    public function test_confirm_success_with_reject()
+    {
+        $owner = $this->authenticatedUser
+            ->owners()
+            ->first();
+
+        $params = ['request_id' => $owner->id, 'confirm' => false];
+
+        $response = $this->postJson("/api/relationship/confirm", $params);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+            ]);
+    }
+
+    /**
+     * 測試確認關係成功，拒絕關係並刪除 user_relationship
+     *
+     * @return void
+     */
+    public function test_confirm_success_with_reject_and_delete()
+    {
+        $owner = $this->authenticatedUser
+            ->owners()
+            ->first();
+        $this->authenticatedUser
+            ->children()
+            ->attach($owner->id, ['type' => 0]);
+
+        $params = ['request_id' => $owner->id, 'confirm' => false];
+
+        $response = $this->postJson("/api/relationship/confirm", $params);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'code' => 200,
+                'message' => 'ok',
+            ]);
+    }
+
+    /**
+     * 測試確認關係失敗，請求不存在
+     *
+     * @return void
+     */
+    public function test_confirm_error_with_request_not_found()
+    {
+        $params = ['request_id' => 9999, 'confirm' => false];
+
+        $response = $this->postJson("/api/relationship/confirm", $params);
+
+        $response
+            ->assertStatus(404)
+            ->assertExactJson([
+                'code' => 10409,
+                'message' => 'Request not found.',
+                'result' => null,
+            ]);
     }
 }
