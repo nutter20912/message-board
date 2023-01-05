@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Http\Controllers;
 
-use App\Enums\UserRrelationshipType;
+use App\Enums\UserRelationshipType;
 use App\Exceptions\QueryException;
 use App\Http\Controllers\UserRelationshipController;
 use App\Models\User;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRrelationshipType;
+use App\Enums\UserRelationshipType;
 use App\Events\RelationshipConfirmed;
 use App\Exceptions as AE;
 use App\Http\Resources\UserRelationshipCollection;
@@ -24,7 +24,7 @@ class UserRelationshipController extends Controller
     {
         $perPage = $request->input('perPage', 15);
         $page = $request->input('page', 1);
-        $type = $request->enum('type', UserRrelationshipType::class);
+        $type = $request->enum('type', UserRelationshipType::class);
 
         if ($request->has('type') && is_null($type)) {
             throw new AE\BadRequestException(code: 10407, message: 'User relationship type is wrong.');
@@ -51,7 +51,7 @@ class UserRelationshipController extends Controller
     public function store(Request $request)
     {
         $childId = $request->input('child_id');
-        $type = $request->enum('type', UserRrelationshipType::class);
+        $type = $request->enum('type', UserRelationshipType::class);
         $user = $request->user();
 
         if ($childId === $user->id) {
@@ -105,7 +105,7 @@ class UserRelationshipController extends Controller
      */
     public function update(Request $request, User $child)
     {
-        $type = $request->enum('type', UserRrelationshipType::class);
+        $type = $request->enum('type', UserRelationshipType::class);
 
         if (is_null($type)) {
             throw new AE\BadRequestException(code: 10404, message: 'User relationship type is wrong.');
