@@ -8,7 +8,7 @@ ENV TZ=UTC
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apk add --no-cache libpng-dev $PHPIZE_DEPS \
+RUN apk add --no-cache libpng-dev supervisor $PHPIZE_DEPS \
   && pecl install redis \
   && docker-php-ext-enable redis \
   && docker-php-ext-install pcntl gd bcmath pdo_mysql \

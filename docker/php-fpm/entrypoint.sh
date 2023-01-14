@@ -4,4 +4,4 @@ composer run post-autoload-dump
 php artisan key:generate
 php artisan l5-swagger:generate
 
-php-fpm
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
