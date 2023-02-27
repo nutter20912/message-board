@@ -85,7 +85,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
         ],
 
@@ -119,4 +119,23 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Logging Watchers
+    |--------------------------------------------------------------------------
+    */
+    'watchers' => [
+        App\Services\Logging\Watchers\RequestWatcher::class => [
+            'enabled' => true,
+            'hidden' => [
+                'password',
+            ],
+        ],
+        App\Services\Logging\Watchers\QueryWatcher::class => [
+            'enabled' => true,
+            'ignored_connection' => [
+                'telescope',
+            ],
+        ],
+    ],
 ];
