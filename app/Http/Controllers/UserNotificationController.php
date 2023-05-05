@@ -17,7 +17,7 @@ class UserNotificationController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Get(
-        path: '/notifications',
+        path: '/api/notifications',
         description: '取得使用者全部通知',
         tags: ['users'],
         operationId: 'notifications.index',
@@ -61,7 +61,7 @@ class UserNotificationController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Get(
-        path: '/notifications/{id}',
+        path: '/api/notifications/{id}',
         description: '取得通知',
         tags: ['users'],
         operationId: 'notifications.show',

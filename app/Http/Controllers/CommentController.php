@@ -21,7 +21,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Get(
-        path: '/posts/{postId}/comments',
+        path: '/api/posts/{postId}/comments',
         description: '取得文章全部評論',
         tags: ['comments'],
         operationId: 'comments.index',
@@ -73,7 +73,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Post(
-        path: '/posts/{postId}/comments',
+        path: '/api/posts/{postId}/comments',
         description: '新增評論',
         tags: ['comments'],
         operationId: 'comments.store',
@@ -134,7 +134,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Get(
-        path: '/comments/{id}',
+        path: '/api/comments/{id}',
         description: '取得評論',
         tags: ['comments'],
         operationId: 'comments.show',
@@ -178,7 +178,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Put(
-        path: '/comments/{id}',
+        path: '/api/comments/{id}',
         description: '更新評論',
         tags: ['comments'],
         operationId: 'comments.update',
@@ -228,7 +228,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Delete(
-        path: '/comments/{id}',
+        path: '/api/comments/{id}',
         description: '刪除評論',
         tags: ['comments'],
         operationId: 'comments.destroy',

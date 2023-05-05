@@ -18,7 +18,7 @@ class AuthController extends Controller
      * @see \Laravel\Sanctum\Http\Controllers\CsrfCookieController
      */
     #[OA\Get(
-        path: '/auth/csrf-cookie',
+        path: '/api/auth/csrf-cookie',
         description: '取得 XSRF-TOKEN',
         tags: ['auth'],
         operationId: 'auth.sanctum.csrf-cookie',
@@ -36,7 +36,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Post(
-        path: '/auth/login',
+        path: '/api/auth/login',
         description: '使用者登入',
         tags: ['auth'],
         operationId: 'auth.login',
@@ -90,7 +90,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Put(
-        path: '/auth/logout',
+        path: '/api/auth/logout',
         description: '使用者登出',
         tags: ['auth'],
         operationId: 'auth.logout',

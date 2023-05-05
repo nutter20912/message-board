@@ -17,7 +17,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Get(
-        path: '/posts',
+        path: '/api/posts',
         description: '取得所有文章',
         tags: ['posts'],
         operationId: 'posts.index',
@@ -63,7 +63,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Post(
-        path: '/posts',
+        path: '/api/posts',
         description: '新增文章',
         tags: ['posts'],
         operationId: 'posts.store',
@@ -116,7 +116,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Get(
-        path: '/posts/{id}',
+        path: '/api/posts/{id}',
         description: '取得文章',
         tags: ['posts'],
         operationId: 'posts.show',
@@ -160,7 +160,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Put(
-        path: '/posts/{id}',
+        path: '/api/posts/{id}',
         description: '更新文章',
         tags: ['posts'],
         operationId: 'posts.update',
@@ -215,7 +215,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OA\Delete(
-        path: '/posts/{id}',
+        path: '/api/posts/{id}',
         description: '刪除文章',
         tags: ['posts'],
         operationId: 'posts.destroy',

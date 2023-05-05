@@ -20,29 +20,6 @@ use OpenApi\Attributes as OA;
             url: 'https://github.com/nutter20912',
         )
     ),
-    servers: [
-        new OA\Server(
-            url: '{appUrl}:{port}/{basePath}',
-            description: 'local API server',
-            variables: [
-                new OA\ServerVariable(
-                    serverVariable: 'appUrl',
-                    enum: [APP_URL],
-                    default: APP_URL,
-                ),
-                new OA\ServerVariable(
-                    serverVariable: 'port',
-                    enum: ['80'],
-                    default: '80',
-                ),
-                new OA\ServerVariable(
-                    serverVariable: 'basePath',
-                    enum: ['api'],
-                    default: 'api',
-                )
-            ]
-        )
-    ],
     security: [
         ['XSRF-TOKEN' => []],
     ],

@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
 class UserController extends Controller
 {
     #[OA\Post(
-        path: '/users',
+        path: '/api/users',
         description: '新增使用者',
         tags: ['users'],
         operationId: 'users.store',
@@ -66,7 +66,7 @@ class UserController extends Controller
     }
 
     #[OA\Get(
-        path: '/users/{id}',
+        path: '/api/users/{id}',
         description: '查詢使用者',
         tags: ['users'],
         operationId: 'users.show',
