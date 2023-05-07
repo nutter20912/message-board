@@ -13,24 +13,6 @@ use OpenApi\Attributes as OA;
 class AuthController extends Controller
 {
     /**
-     * 初始化 csrf token
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     * @see \Laravel\Sanctum\Http\Controllers\CsrfCookieController
-     */
-    #[OA\Get(
-        path: '/api/auth/csrf-cookie',
-        description: '取得 XSRF-TOKEN',
-        tags: ['auth'],
-        operationId: 'auth.sanctum.csrf-cookie',
-    )]
-    #[OA\Response(response: 204, description: 'set an XSRF-TOKEN cookie', content: new OA\JsonContent())]
-    public function getCsrfCookie()
-    {
-        return Redirect::route('sanctum.csrf-cookie');
-    }
-
-    /**
      * 使用者登入
      *
      * @param  \Illuminate\Http\Request  $request
@@ -58,7 +40,10 @@ class AuthController extends Controller
             allOf: [
                 new OA\Schema(ref: '#/components/schemas/apiResponse'),
                 new OA\Schema(properties: [
-                    new OA\Property(property: 'result', type: UserResource::class),
+                    new OA\Property(property: 'result', properties: [
+                        new OA\Property(property: 'user', type: UserResource::class),
+                        new OA\Property(property: 'token', type: 'string'),
+                    ],),
                 ]),
             ],
         )
