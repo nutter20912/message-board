@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Listeners;
 
 use App\Listeners\UserEventSubscriber;
 use App\Models\User;

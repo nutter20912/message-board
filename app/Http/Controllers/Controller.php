@@ -21,7 +21,7 @@ use OpenApi\Attributes as OA;
         )
     ),
     security: [
-        ['XSRF-TOKEN' => []],
+        ['api' => []],
     ],
 )]
 #[OA\Schema(
@@ -35,10 +35,11 @@ use OpenApi\Attributes as OA;
     ],
 )]
 #[OA\SecurityScheme(
-    securityScheme: 'XSRF-TOKEN',
-    type: 'apiKey',
-    name: 'X-XSRF-TOKEN',
-    in: 'header'
+    securityScheme: 'api',
+    type: 'http',
+    name: 'api',
+    in: 'header',
+    scheme: 'bearer',
 )]
 class Controller extends BaseController
 {

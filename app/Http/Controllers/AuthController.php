@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
 use App\Http\Resources\UserResource;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -74,12 +75,22 @@ class AuthController extends Controller
             throw new BadRequestException('Login failed', 10001);
         }
 
-        $request->session()->regenerate();
+        $user = $request->user();
+        $user->tokens()->delete();
+        $token =  $user->createToken(
+            name: 'pc',
+            expiresAt: Carbon::now()
+                ->addMinutes(config('sanctum.expiration'))
+                ->toDateTime(),
+        );
 
         return response()->json([
             'code' => 200,
             'message' => 'ok',
-            'result' => new UserResource($request->user()),
+            'result' => [
+                'user' => new UserResource($request->user()),
+                'token' => $token->plainTextToken,
+            ],
         ], 200);
     }
 
