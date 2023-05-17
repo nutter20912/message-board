@@ -1,0 +1,27 @@
+pageInfo:
+  title: message-board
+sections:
+  - name: local
+    icon: far fa-rocket
+    items:
+      - title: apidoc
+        description: api doc
+        url: http://localhost:82
+        id: 0_523_apidoc
+      - title: telescope
+        description: telescope
+        url: http://localhost:82/telescope
+        id: 1_523_telescope
+      - title: horizon
+        description: horizon
+        url: http://localhost:82/horizon
+        id: 2_523_horizon
+      - title: website
+        description: website
+        url: http://localhost:3000
+        id: 3_523_site
+appConfig:
+  theme: colorful
+  language: zh-tw
+  layout: auto
+  iconSize: small

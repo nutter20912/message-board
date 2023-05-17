@@ -19,7 +19,6 @@ COPY composer.* .
 RUN composer install --no-scripts && composer clear-cache
 
 COPY ./docker/php-fpm/conf.d /usr/local/etc/php/conf.d
-RUN touch database.sqlite
 
 ###########################################################################
 # local

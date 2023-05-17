@@ -1,6 +1,13 @@
 version: '3.8'
 
 services:
+### dashy ###########################################
+    dashy:
+        image: 'lissy93/dashy'
+        ports:
+            - '8080:80'
+        volumes:
+            - ./docker/dashy/conf.yml:/app/public/conf.yml
 ### Mysql ###########################################
     mysql:
         image: 'mysql/mysql-server:8.0'
