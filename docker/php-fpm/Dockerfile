@@ -9,16 +9,14 @@ ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apk add --no-cache libpng-dev supervisor $PHPIZE_DEPS \
-  && pecl install redis \
-  && docker-php-ext-enable redis \
+  && pecl install redis swoole \
+  && docker-php-ext-enable redis swoole\
   && docker-php-ext-install pcntl gd bcmath pdo_mysql \
   && apk del $PHPIZE_DEPS
 
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 COPY composer.* .
 RUN composer install --no-scripts && composer clear-cache
-
-COPY ./docker/php-fpm/conf.d /usr/local/etc/php/conf.d
 
 ###########################################################################
 # local
@@ -33,6 +31,7 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
 COPY . .
 RUN chmod -R 777 storage
 
+COPY ./docker/php-fpm/conf.d /usr/local/etc/php/conf.d
 COPY ./docker/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

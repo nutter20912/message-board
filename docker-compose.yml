@@ -12,6 +12,7 @@ services:
         ports:
             - 9000:9000
             - 6001:6001
+            - 8000:8000 # octance
         volumes:
             - .:/var/www
             - /var/www/vendor/

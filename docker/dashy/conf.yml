@@ -6,15 +6,15 @@ sections:
     items:
       - title: apidoc
         description: api doc
-        url: http://localhost:82
+        url: http://localhost:8000
         id: 0_523_apidoc
       - title: telescope
         description: telescope
-        url: http://localhost:82/telescope
+        url: http://localhost:8000/telescope
         id: 1_523_telescope
       - title: horizon
         description: horizon
-        url: http://localhost:82/horizon
+        url: http://localhost:8000/horizon
         id: 2_523_horizon
       - title: website
         description: website
